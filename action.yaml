@@ -19,6 +19,7 @@ runs:
       shell: bash
     - id: git-log
       run: git log
+      shell: bash
     - run: ${{ github.action_path }}/goodbye.sh
       shell: bash
 
