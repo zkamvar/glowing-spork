@@ -3,7 +3,7 @@ set -euo pipefail
 should_i_push=${1:-false}
 echo "Should I push? ${should_i_push}"
 
-if [ "${should_i_push}" -eq true ]; then
+if [ "${should_i_push}" == true ]; then
   git config --local user.email "actions@github.com"
   git config --local user.name "GitHub Actions"
   printf "\n" >> README.md
