@@ -5,6 +5,10 @@ inputs:
     description: 'Who to greet'
     required: true
     default: 'World'
+  push:
+    description: 'Push to main branch?'
+    required: true
+    default: false
 outputs:
   random-number: 
     description: "Random number"
@@ -12,13 +16,23 @@ outputs:
 runs:
   using: "composite"
   steps: 
-    - run: echo Hello ${{ inputs.who-to-greet }}.
+    - run: echo Hello ${{ inputs.who-to-greet }}
       shell: bash
     - id: random-number-generator
       run: echo "::set-output name=random-id::$(echo ${RANDOM})"
       shell: bash
     - id: git-log
       run: git log
+      shell: bash
+    - id: push
+      if: ${{ inputs.push }}
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Actions"
+        git log >> README.md
+        git add .
+        git commit -m "update README with log"
+        git push
       shell: bash
     - run: ${{ github.action_path }}/goodbye.sh
       shell: bash
