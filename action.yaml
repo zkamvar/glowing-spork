@@ -25,14 +25,15 @@ runs:
       run: git log
       shell: bash
     - id: push
-      if: ${{ inputs.push }}
       run: |
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Actions"
-        git log >> README.md
-        git add .
-        git commit -m "update README with log"
-        git push
+        if [[ ${{ inputs.push }} -eq true ]]; then
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git log >> README.md
+          git add .
+          git commit -m "update README with log"
+          git push
+        fi
       shell: bash
     - run: ${{ github.action_path }}/goodbye.sh
       shell: bash
